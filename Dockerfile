@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir .
 EXPOSE 8501
 
 # Start LPW service
-CMD ["lpw"]
+CMD ["lpw start"]
