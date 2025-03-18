@@ -12,8 +12,7 @@ services:
       - ./data/ollama:/root/.ollama
     ports:
       - 11434:11434
-    command: >
-      sh -c "ollama pull llama3:latest && ollama serve"
+    entrypoint: ["/bin/sh", "-c", "ollama pull llama3:latest && ollama serve"]
 
   ollama-webui:
     image: ghcr.io/ollama-webui/ollama-webui:main
