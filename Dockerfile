@@ -11,14 +11,11 @@ RUN apt-get update && \
 # Copy project files
 COPY . .
 
-# Install LPW using setup.py
-RUN pip install --no-cache-dir .
-
-# Ensure lpw is installed properly and available globally
-RUN pip install --no-cache-dir --editable .
+# Ensure LPW is installed properly using setup.py
+RUN python3 setup.py install
 
 # Expose Streamlit port
 EXPOSE 8501
 
 # Start LPW service
-CMD ["python3", "-m", "lpw.bin.lpw", "start"]
+CMD ["lpw", "start"]
