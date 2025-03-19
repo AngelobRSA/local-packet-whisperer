@@ -3,11 +3,13 @@ import ollama
 from ollama import Client
 from typing import List
 
-class OllamaClient():
+import os
 
-    def __init__(self, server="127.0.0.1"):
+class OllamaClient():
+    def __init__(self, server=None):
+        self.server = server or os.getenv("OLLAMA_URL", "http://ollama:11434")
         self.messages = []
-        self.client = Client(host=f'http://{server}:11434')
+        self.client = Client(host=self.server)
     
     def setServer(self,server, port):
         self.client = Client(host=f'http://{server}:{port}')
