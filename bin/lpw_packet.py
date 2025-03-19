@@ -20,12 +20,15 @@ def getPcapData(input_file:str = "", filter="", decode_info={}):
         if os.name == 'nt':
             eventloop = asyncio.ProactorEventLoop()
             asyncio.set_event_loop(eventloop)        
+        print(f"Input file: {input_file}, Filter: {filter}")
         cap : ps.FileCapture = ps.FileCapture(input_file=input_file, display_filter=filter)
         outfile_path = os.path.join(getLpwPath('temp'), 'out.txt')
         with open(outfile_path, 'w') as f:
             for pkt in cap:
+                print(f"Packet: {pkt}")
                 print(pkt, file=f)
         out_string = open(outfile_path, 'r').read()
+        print(f"Output string: {out_string}")
         #os.remove('out.txt')
     except ps.tshark.tshark.TSharkNotFoundException:
         st.error(body='TShark/Wireshark is not installed. \n Please install [wireshark](https://tshark.dev/setup/install/#install-wireshark-with-a-package-manager) first', icon='🚨')
