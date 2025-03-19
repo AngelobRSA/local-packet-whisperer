@@ -11,17 +11,23 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy project files
+
 COPY . .
 
-# Install Python dependencies but exclude 'uv'
-RUN pip install --no-cache-dir -r requirements.txt --no-binary uv
+# Install Rust & Cargo before installing Python dependencies
+RUN apt-get update && apt-get install -y curl && \
+    curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+    export PATH="$HOME/.cargo/bin:$PATH"
 
-# Install LPW as an editable package
-RUN pip install --no-cache-dir --editable .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install LPW using setup.py
+RUN pip install --no-cache-dir .
 
 # Expose Streamlit port
 EXPOSE 8501
 
 # Start LPW service
-CMD ["python3", "-m", "lpw.bin.lpw", "start"]
+CMD ["streamlit", "run", "bin/lpw_main.py"]
+  
